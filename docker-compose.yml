@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: cloudtasker-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: sahil123
+      MYSQL_DATABASE: cloudtasker_db
+    ports:
+      - "3307:3306"
+    networks:
+      - cloudtasker-net
+
+  web:
+    build: .
+    container_name: cloudtasker-web
+    ports:
+      - "8080:5000"
+    environment:
+      MYSQL_HOST: db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: sahil123
+      MYSQL_DB: cloudtasker_db
+    depends_on:
+      - db
+    networks:
+      - cloudtasker-net
+
+networks:
+  cloudtasker-net:
+    driver: bridge
+
